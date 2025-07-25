@@ -1,0 +1,85 @@
+diff --git i/configure w/configure
+index 9b7c83f..cad423e 100755
+--- i/configure
++++ w/configure
+@@ -7675,6 +7675,9 @@ lt_cv_deplibs_check_method='unknown'
+ # whether 'pass_all' will *always* work, you probably want this one.
+ 
+ case $host_os in
++*openedition*)
++  lt_cv_deplibs_check_method=pass_all
++  ;;
+ aix[4-9]*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+diff --git i/contrib/ldapc++/configure w/contrib/ldapc++/configure
+index c02a6c6..a616ec2 100755
+--- i/contrib/ldapc++/configure
++++ w/contrib/ldapc++/configure
+@@ -5624,6 +5624,9 @@ lt_cv_deplibs_check_method='unknown'
+ # whether 'pass_all' will *always* work, you probably want this one.
+ 
+ case $host_os in
++*openedition*)
++  lt_cv_deplibs_check_method=pass_all
++  ;;
+ aix[4-9]*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+diff --git i/libraries/liblmdb/mdb.c w/libraries/liblmdb/mdb.c
+index 668f966..476a186 100644
+--- i/libraries/liblmdb/mdb.c
++++ w/libraries/liblmdb/mdb.c
+@@ -101,6 +101,8 @@
+ #include <string.h>
+ #include <time.h>
+ 
++#include <sys/endian.h>
++
+ #ifdef _MSC_VER
+ #include <io.h>
+ typedef SSIZE_T	ssize_t;
+@@ -10232,7 +10234,7 @@ mdb_reader_list(MDB_env *env, MDB_msg_func *func, void *ctx)
+ 			txnid_t	txnid = mr[i].mr_txnid;
+ 			sprintf(buf, txnid == (txnid_t)-1 ?
+ 				"%10d %"Z"x -\n" : "%10d %"Z"x %"Z"u\n",
+-				(int)mr[i].mr_pid, (size_t)mr[i].mr_tid, txnid);
++				(int)mr[i].mr_pid, (size_t)mr[i].mr_tid.__, txnid);
+ 			if (first) {
+ 				first = 0;
+ 				rc = func("    pid     thread     txnid\n", ctx);
+diff --git i/servers/slapd/logging.c w/servers/slapd/logging.c
+index b72e9b7..1236a4f 100644
+--- i/servers/slapd/logging.c
++++ w/servers/slapd/logging.c
+@@ -131,7 +131,7 @@ slap_debug_print( const char *data )
+ #else
+ 	iov[0].iov_base = prefix;
+ 	iov[0].iov_len = sprintf( prefix, "%lx." TS " %p ",
+-		(long)tv.tv_sec, (unsigned int)Tfrac, (void *)ldap_pvt_thread_self() );
++		(long)tv.tv_sec, (unsigned int)Tfrac, (void *)ldap_pvt_thread_self().__ );
+ 	iov[1].iov_base = (void *)data;
+ 	iov[1].iov_len = strlen( data );
+ 	len = iov[0].iov_len + iov[1].iov_len;
+diff --git i/servers/slapd/syncrepl.c w/servers/slapd/syncrepl.c
+index 08a5293..fefc7f9 100644
+--- i/servers/slapd/syncrepl.c
++++ w/servers/slapd/syncrepl.c
+@@ -3211,7 +3211,7 @@ syncrepl_message_to_op(
+ 	slap_op_time( &op->o_time, &op->o_tincr );
+ 
+ 	Debug( LDAP_DEBUG_SYNC, "syncrepl_message_to_op: %s tid %p\n",
+-		si->si_ridtxt, (void *)op->o_tid );
++		si->si_ridtxt, (void *)op->o_tid.__ );
+ 
+ 	switch( op->o_tag ) {
+ 	case LDAP_REQ_ADD:
+@@ -4123,7 +4123,7 @@ syncrepl_entry(
+ 
+ 	Debug( LDAP_DEBUG_SYNC,
+ 		"syncrepl_entry: %s LDAP_RES_SEARCH_ENTRY(LDAP_SYNC_%s) csn=%s tid %p\n",
+-		si->si_ridtxt, syncrepl_state2str( syncstate ), syncCSN ? syncCSN->bv_val : "(none)", (void *)op->o_tid );
++		si->si_ridtxt, syncrepl_state2str( syncstate ), syncCSN ? syncCSN->bv_val : "(none)", (void *)op->o_tid.__ );
+ 
+ 	if (( syncstate == LDAP_SYNC_PRESENT || syncstate == LDAP_SYNC_ADD ) ) {
+ 		if ( !si->si_refreshPresent && !si->si_refreshDone ) {
