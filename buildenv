@@ -1,6 +1,6 @@
 # Update bump details accordingly. Use bump check to confirm.
 # bump: openldap-version /OPENLDAP_VERSION="(.*)"/ https://www.openldap.org/software/download/OpenLDAP/openldap-release/|re:/href="openldap-([\d.]+).tgz"/$1/|semver:*
-OPENLDAP_VERSION="2.6.10" # Specify a stable release
+OPENLDAP_VERSION="2.7.1" # Specify a stable release
 export ZOPEN_STABLE_TAG="v${OPENLDAP_VERSION}"
 
 ###
